@@ -1,0 +1,4 @@
+PROTOCOL (?:%{SSH}|%{RDP}|%{TELNET})
+SSH (ssh2)
+RDP (rdp)
+TELNET (telnet)
