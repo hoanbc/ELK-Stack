@@ -1,3 +1,0 @@
-SSH (?:%{LOGINSSH1}|%{LOGINSSH2})
-LOGINSSH1 %{WORD:Action}%{SPACE}password%{SPACE}for%{SPACE}%{WORD:Account}%{SPACE}from%{SPACE}%{IPV4:Remote_Host}%{SPACE}port%{SPACE}%{NUMBER}%{SPACE}%{WORD:Protocol}
-LOGINSSH2 %{WORD:Action}%{SPACE}password%{SPACE}for%{SPACE}invalid%{SPACE}user%{SPACE}%{WORD:Account}%{SPACE}from%{SPACE}%{IPV4:Remote_Host}%{SPACE}port%{SPACE}%{NUMBER}%{SPACE}%{WORD:Protocol}

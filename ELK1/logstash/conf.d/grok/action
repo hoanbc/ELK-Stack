@@ -1,4 +1,0 @@
-ACTION (?:%{FAILED}|%{ACCEPTED}|%{INVALID})
-FAILED (Failed)
-ACCEPTED (Accepted)
-INVALID (Invalid)
