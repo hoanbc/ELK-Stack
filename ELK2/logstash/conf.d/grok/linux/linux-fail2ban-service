@@ -1,0 +1,1 @@
+FAIL2BAN \[sshd\]%{SPACE}%{WORD:Action}%{SPACE}%{IPV4:Remote_Host}

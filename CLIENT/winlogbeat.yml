@@ -1,0 +1,60 @@
+#================================ Inputs =====================================
+###Monitor remote connection to server through Event ID
+winlogbeat.event_logs:
+  - name: Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+    event_id: 21,23,24,25
+    ignore_older: 24h
+    fields:
+      custom_services: win-access
+    processors:
+      - drop_fields:
+          fields: [winlog.opcode,winlog.api,winlog.channel,winlog.task,winlog.computer_name,winlog.user,winlog.process,winlog.provider_name,winlog.activity_id,winlog.provider_guid]
+    fields_under_root: true 
+###Monitor System log through Event Level    
+  - name: System
+    level: critical, error, warning
+    ignore_older: 24h
+    fields:
+      custom_services: win-system
+    processors:
+      - drop_fields:
+          fields: [winlog.opcode,winlog.api,winlog.event_data,winlog.channel,winlog.task,winlog.user.identifier,winlog.user.type,winlog.process,winlog.provider_name,winlog.activity_id,winlog.provider_guid]
+    fields_under_root: true
+###Monitor Application log through Event Level     
+  - name: Application
+    level: critical, error, warning
+    ignore_older: 24h
+    fields:
+      custom_services: win-application
+    processors:
+      - drop_fields:
+          fields: [winlog.opcode,winlog.api,winlog.event_data,winlog.channel,winlog.task,winlog.user.identifier,winlog.user.type,winlog.process,winlog.provider_name,winlog.activity_id,winlog.provider_guid]
+    fields_under_root: true
+#Drop event_id if this safe
+#      - drop_event.when:
+#          equals.event_id: 4624
+#    fields_under_root: true
+
+#================================ Outputs =====================================
+###Send log to Logstash server
+output.logstash:
+  hosts: ["10.200.9.51:5515"]
+  bulk_max_size: 1024
+  worker: 1
+  compression_level: 3
+###Quota resource for process Winlogbeat on server
+max_process: 1
+queue.mem:
+  events: 256
+  flush.min_events: 128
+  flush.timeout: 5s
+  
+###Save log to localhost  
+#logging:
+ # to_files: true
+  #files:
+   # path: C:\Program Files\Winlogbeat\Logs
+    #name: winlogbeat.log
+    #rotateeverybytes: 10485760 
+    #keepfiles: 7
+  #level: info
